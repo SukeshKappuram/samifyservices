@@ -1,0 +1,92 @@
+<div id="content" class="site-content">
+  <div class="ast-container">
+    <div id="primary" class="content-area primary">
+      <main id="main" class="site-main">
+        <article class="post-8 page type-page status-publish ast-article-single" id="post-8"
+          itemtype="https://schema.org/CreativeWork" itemscope="itemscope">
+          <header class="entry-header ast-no-title ast-header-without-markup"></header>
+          <div class="entry-content clear" itemprop="text">
+            <div data-elementor-type="wp-post" data-elementor-id="8" class="elementor elementor-8">
+              <div class="elementor-element elementor-element-a77760e e-flex e-con-boxed e-con e-parent e-lazyloaded"
+                data-id="a77760e" data-element_type="container" data-settings="{'background_background':'classic'}">
+                <div class="e-con-inner">
+                  <div class="elementor-element elementor-element-c983c45 e-con-full e-flex e-con e-child"
+                    data-id="c983c45" data-element_type="container">
+                    <div class="elementor-element elementor-element-3033cab elementor-widget elementor-widget-heading"
+                      data-id="3033cab" data-element_type="widget" data-widget_type="heading.default">
+                      <div class="elementor-widget-container">
+                        <h1 class="elementor-heading-title elementor-size-default">
+                          Jobs
+                        </h1>
+                      </div>
+                    </div>
+                    <div
+                      class="elementor-element elementor-element-25b92db elementor-widget elementor-widget-text-editor"
+                      data-id="25b92db" data-element_type="widget" data-widget_type="text-editor.default">
+                      <div class="elementor-widget-container">
+                        <p>
+                          Our Openings
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="elementor-element elementor-element-6929996 e-flex e-con-boxed e-con e-parent e-lazyloaded"
+                data-id="6929996" data-element_type="container" data-settings="{'background_background':'classic'}">
+                <div class="container py-2">
+                  <ng-container>
+                    <div class="row pb-4">
+                      <div class="col-md-12 float-end">
+                        <input class="form-control form-control-lg" type="text" placeholder="Search Job"
+                          [(ngModel)]="query" aria-label="Search Job">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 col-lg-6" *ngFor="let job of latestJobs | search: query;let j = index ">
+                        <div class="card border-secondary shadow p-3 mb-5 bg-body rounded">
+                          <div class="card-header">
+                            <ul class="nav nav-pills card-header-pills float-end">
+                              <li class="nav-item">
+                                <a class="nav-link active"
+                                  [href]="'mailto:info@ryprotechnologies.com?subject='+job.jobId+' : '+job.title+'body=Hi! I\'m Interested to apply for the above role. Thanks!'">Apply</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" style="cursor: pointer;"
+                                  (click)="showDetails(j)">{{job.showDetails?'Hide':'View'}} Details</a>
+                              </li>
+                            </ul>
+                          </div>
+
+                          <div class="card-body">
+                            <h5 class="card-title">{{job.title}}</h5>
+                            <span class="badge bg-dark mx-1" *ngFor="let location of job.locations"><i
+                                class="bi bi-geo-alt-fill"></i> {{location}}</span><br />
+                            <span class="badge bg-secondary mx-1 mt-2" *ngFor="let skill of job.skills"><i
+                                class="bi bi-tags-fill"></i> {{skill}}</span><br />
+                            <span class="mx-2 mt-2"> <i class="bi bi-briefcase-fill"></i> {{job.experience}}</span>
+                            <span class="mx-2 mt-2"> <i class="bi bi-clock"></i> {{job.type}}</span>
+                            <dl class="mt-2" [hidden]="!job.showDetails">
+                              <dt>Job Description</dt>
+                              <dd>
+                                <p [innerHTML]="job.description"></p>
+                              </dd>
+                            </dl>
+                          </div>
+
+                          <div class="card-footer">
+                            <span class="float-end"> Posted {{job.postedDate | dateAgo}} </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </main>
+    </div>
+  </div>
+</div>

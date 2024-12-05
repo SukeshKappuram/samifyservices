@@ -1,0 +1,27 @@
+{
+  "jobs": [
+    {
+      "id": 101,
+      "title": "Desk Side Support – L2",
+      "description": " A+ Hardware, Microsoft (preferred),  ITIL (Preferred) , CCNA (preferred)",
+      "type": "Contract",
+      "locations": ["Amsterdam","Netherlands"],
+      "skills": ["Hardware Support","Windows OS", "ServiceNow"],
+      "experience": "3 Years minimum",
+      "postedDate": "Dec 5, 2024 03:15 PM"
+    },
+    {
+      "id": 102,
+      "title": "Mobile Lead/Developer",
+      "description": "Expertise in design and development of web applications and mobile applications using Wireframes, JavaScript, HTML5, CSS3, JQUERY, AJAX, JSON, Bootstrap, Ionic, Angular, Typescript, Cordova, Capacitor, XCode, Android Studio, Kotlin, Stencil.",
+      "type": "Permanent",
+      "locations": ["Dallas,United States", "Kalburgh,United States", "Cleveland,United States"],
+      "skills": [
+        "AJAX",
+        "HTML5",
+        "Javascript"],
+      "experience": "2 years ",
+      "postedDate": "12/04/2024 04:32 PM"
+    }
+  ]
+}
