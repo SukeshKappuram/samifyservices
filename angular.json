@@ -34,7 +34,10 @@
               "node_modules/bootstrap-icons/font/bootstrap-icons.scss",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -73,6 +76,9 @@
               "browserTarget": "rypro:build:development"
             }
           },
+          "options": {
+            "port": 60126
+        },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {

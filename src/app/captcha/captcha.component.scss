@@ -1,0 +1,40 @@
+/* Add application styles & imports to this file! */
+
+.captcha-container {
+	width: 100%;
+  border: 1px solid;
+  padding: 5px;
+	box-shadow: 1px 1px 1px 1px #CCC;
+}
+
+.captcha-actions input[type="text"] {
+	padding: 5px;
+	border: 1px solid #ccc;
+	border-radius: 10px 0 0 10px;
+	outline: none;
+}
+.captcha-actions input[type="button"] {
+	outline: none;
+	padding: 6px;
+	border: none;
+	background: #ccc;
+	border-radius: 0 10px 10px 0;
+}
+.recaptcha-input .captcha-actions input {
+  width: 100%;
+	border-radius: 4px;
+}
+.recaptcha-input canvas {
+	width: 85%;
+}
+.recaptcha-input .cpt-btn {
+	width: 100%;
+	font-size: 20px;
+	text-align: center;
+}
+.toast-top-center {
+	top: 12px;
+	margin: 0 auto;
+	left: 50%;
+	margin-left: -150px;
+}

@@ -37,48 +37,88 @@
                 <div class="container py-2">
                   <ng-container>
                     <div class="row pb-4">
-                      <div class="col-md-12 float-end">
+                      <div [ngClass]="isAdmin?(isUserLoggedIn ? 'col-md-10 col-lg-11':'col-md-11'):'col-md-12'">
                         <input class="form-control form-control-lg" type="text" placeholder="Search Job"
                           [(ngModel)]="query" aria-label="Search Job">
                       </div>
+                      <div class="pt-2" *ngIf="isAdmin" [ngClass]="isUserLoggedIn ? 'col-md-2 col-lg-1' : 'col-md-1'">
+                        <i class="bi fa-2x float-start text-primary cursor-pointer" data-bs-toggle="modal"
+                          (click)="modifyJob()" (keypress)="modifyJob()"
+                          [attr.data-bs-target]="isUserLoggedIn ? '#exampleModalToggle' : '#staticBackdrop'"
+                          [ngClass]="isUserLoggedIn ? 'bi-plus-circle-fill mx-2' : 'bi-box-arrow-in-right'"></i>
+
+                        <i class="bi bi-box-arrow-right text-primary fa-2x float-end cursor-pointer" (click)="logout()"
+                          (keypress)="logout()" *ngIf="isAdmin && isUserLoggedIn"></i>
+                      </div>
                     </div>
-                    <div class="row">
-                      <div class="col-md-12 col-lg-6" *ngFor="let job of latestJobs | search: query;let j = index ">
-                        <div class="card border-secondary shadow p-3 mb-5 bg-body rounded">
-                          <div class="card-header">
-                            <ul class="nav nav-pills card-header-pills float-end">
-                              <li class="nav-item">
-                                <a class="nav-link active"
-                                  [href]="'mailto:info@ryprotechnologies.com?subject='+job.jobId+' : '+job.title+'body=Hi! I\'m Interested to apply for the above role. Thanks!'">Apply</a>
-                              </li>
-                              <li class="nav-item">
-                                <a class="nav-link" style="cursor: pointer;"
-                                  (click)="showDetails(j)">{{job.showDetails?'Hide':'View'}} Details</a>
-                              </li>
-                            </ul>
-                          </div>
-
-                          <div class="card-body">
-                            <h5 class="card-title">{{job.title}}</h5>
-                            <span class="badge bg-dark mx-1" *ngFor="let location of job.locations"><i
-                                class="bi bi-geo-alt-fill"></i> {{location}}</span><br />
-                            <span class="badge bg-secondary mx-1 mt-2" *ngFor="let skill of job.skills"><i
-                                class="bi bi-tags-fill"></i> {{skill}}</span><br />
-                            <span class="mx-2 mt-2"> <i class="bi bi-briefcase-fill"></i> {{job.experience}}</span>
-                            <span class="mx-2 mt-2"> <i class="bi bi-clock"></i> {{job.type}}</span>
-                            <dl class="mt-2" [hidden]="!job.showDetails">
-                              <dt>Job Description</dt>
-                              <dd>
-                                <p [innerHTML]="job.description"></p>
-                              </dd>
-                            </dl>
-                          </div>
-
-                          <div class="card-footer">
-                            <span class="float-end"> Posted {{job.postedDate | dateAgo}} </span>
-                          </div>
+                    <div class="row" *ngIf="responseObj()">
+                      <div class="col-md-12">
+                        <div class="alert alert-dismissible fade show" role="alert"
+                          *ngIf="responseObj().action === 'post'"
+                          [ngClass]="responseObj().isSuccess ? 'alert-success' : 'alert-danger'">
+                          <i class="bi px-1"
+                            [ngClass]="isUserLoggedIn ? 'bi-check-circle' : 'bi-exclamation-triangle'"></i>
+                          <span [innerHTML]="responseObj().message"></span>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                       </div>
+                    </div>
+                    <div class="row">
+                      <ng-container *ngFor="let job of latestJobs | search: query; let j = index; trackBy: identify">
+                        <div class="col-md-12 col-lg-6" *ngIf="(!job.isDeleted) && job.isCleared; else showDelete">
+                          <div class="card border-secondary shadow p-3 mb-5 bg-body rounded">
+                            <div class="card-header">
+                              <ul class="nav nav-pills card-header-pills float-end">
+                                <li class="nav-item">
+                                  <a class="nav-link active" *ngIf="!isAdmin"
+                                    [href]="'mailto:info@ryprotechnologies.com?subject='+job.jobId+' : '+job.title+'&body=Hi! I\'m Interested to apply for the above role. Thanks!'">Apply</a>
+                                  <a class="nav-link active" data-bs-toggle="modal" data-bs-target="#exampleModalToggle"
+                                    *ngIf="isUserLoggedIn" (click)="edit(job.id)">Edit</a>
+                                </li>
+                                <li class="nav-item">
+                                  <a class="nav-link cursor-pointer"
+                                    (click)="showDetails(j)">{{job.showDetails?'Hide':'View'}} Details</a>
+                                </li>
+                              </ul>
+                            </div>
+
+                            <div class="card-body">
+                              <h5 class="card-title">{{job.title}}</h5>
+                              <span class="badge bg-dark mx-1" *ngFor="let location of job.locations"><i
+                                  class="bi bi-geo-alt-fill"></i> {{location}}</span><br />
+                              <span class="badge bg-secondary mx-1 mt-2" *ngFor="let skill of job.skills"><i
+                                  class="bi bi-tags-fill"></i> {{skill}}</span><br />
+                              <span class="mx-2 mt-2"> <i class="bi bi-briefcase-fill"></i> {{job.experience}} </span>
+                              <span class="mx-2 mt-2"> <i class="bi bi-clock"></i> {{job.type}}</span>
+                              <dl class="mt-2" [hidden]="!job.showDetails">
+                                <dt>Job Description</dt>
+                                <dd>
+                                  <p [innerHTML]="getContent(job.description)"></p>
+                                </dd>
+                              </dl>
+                            </div>
+
+                            <div class="card-footer">
+                              <button class="btn btn-outline-primary" *ngIf="isUserLoggedIn" (click)="deleteJob(job)"><i
+                                  class="bi bi-trash-fill float-start"></i></button>
+                              <span class="float-end"> Posted {{getDate(job.postedDate) | dateAgo}} </span>
+                            </div>
+                          </div>
+                        </div>
+                        <ng-template #showDelete>
+                          <div class="col-md-12 col-lg-6" *ngIf="responseObj() && !job.isCleared">
+                            <div class="alert alert-dismissible fade show" role="alert"
+                              *ngIf="responseObj()?.action === 'delete'"
+                              [ngClass]="responseObj()?.isSuccess ? 'alert-success' : 'alert-danger'">
+                              <i class="bi px-1"
+                                [ngClass]="isUserLoggedIn ? 'bi-check-circle' : 'bi-exclamation-triangle'"></i>
+                              <span [innerHTML]="responseObj()?.message"></span>
+                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                (close)="getJobs()"></button>
+                            </div>
+                          </div>
+                        </ng-template>
+                      </ng-container>
                     </div>
                   </ng-container>
                 </div>
@@ -87,6 +127,178 @@
           </div>
         </article>
       </main>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Login</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-dismissible fade show" role="alert" *ngIf="hasError || isUserLoggedIn"
+          [ngClass]="isUserLoggedIn ? 'alert-success' : 'alert-danger'">
+          <i class="bi px-1" [ngClass]="isUserLoggedIn ? 'bi-check-circle' : 'bi-exclamation-triangle'"></i>
+          <span [innerHTML]="helperText()"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <form class="row g-3" [formGroup]="loginForm" *ngIf="!isUserLoggedIn; else authenticated">
+          <div class="col-md-12">
+            <label for="staticEmail2" class="visually-hidden">Email</label>
+            <input type="email" class="form-control form-control-plaintext" formControlName="emailAddress"
+              id="staticEmail2" placeholder="Email Address">
+          </div>
+          <div class="col-md-12">
+            <label for="inputPassword2" class="visually-hidden">Password</label>
+            <input type="password" class="form-control" formControlName="password" id="inputPassword2"
+              placeholder="Password">
+          </div>
+          <div class="col-auto">
+            <app-captcha #captcha (captchaResultUpdated)="validateCaptcha($event)">
+            </app-captcha>
+          </div>
+        </form>
+        <ng-template #authenticated>
+          <p>Hi Admin !!</p>
+          <p>Welcome to Admin console, You can start posting new jobs from here</p>
+        </ng-template>
+      </div>
+      <div class="modal-footer">
+        <div class="text-muted position-absolute left-15" [hidden]="isUserLoggedIn">
+          New User ? <a class="text-primary" (click)="signup()">Register</a>
+        </div>
+
+        <button type="button" class="btn btn-secondary float-end" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary float-end" [disabled]="!loginForm.valid || !isCaptchaValidated"
+          (click)="authenticate()" [hidden]="isUserLoggedIn">Login</button>
+        <button class="btn btn-primary float-end" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"
+          data-bs-dismiss="modal" *ngIf="isUserLoggedIn" (click)="modifyJob()">Post a Job</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModalToggle" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"
+  aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalToggleLabel">Job Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="jobForm" novalidate *ngIf="jobForm">
+          <div class="row mb-1">
+            <div class="col-md-12">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingInput" placeholder="Job Title"
+                  formControlName="title" required>
+                <label for="floatingInput">Job Title</label>
+              </div>
+              <span class="text-danger" *ngIf="validateField('title') && jobForm.get('title')?.invalid">
+                Please enter title
+              </span>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <p class="mb-1">Job Type</p>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="type" id="flexRadioDefault1" formControlName="type"
+                  value="Permanent" />
+                <label class="form-check-label" for="flexRadioDefault1">
+                  Permanent
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="type" id="flexRadioDefault2" formControlName="type"
+                  value="Contract" />
+                <label class="form-check-label" for="flexRadioDefault2">
+                  Contract
+                </label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <select class="form-select" id="validationCustom04" formControlName="experience" name="experienceEle">
+                  <option disabled value="-1">Experience</option>
+                  <ng-container *ngFor="let e of experiences; let i = index">
+                    <option [value]="i"> {{e}} years and above </option>
+                  </ng-container>
+                </select>
+                <label for="floatingSelect">Job Experience</label>
+                <span class="text-danger" *ngIf="validateField('experience', -1)">
+                  Please select a valid experience.
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-0">
+            <div class="col-md-6">
+              <mat-form-field class="custom-chip-list">
+                <label for="validationCustom03" class="custom-label">Job Location</label>
+                <mat-chip-grid #locationsChipGrid formControlName="locations" aria-label="enter sandwich fillings">
+                  <mat-chip-row (removed)="remove(location, 1)" *ngFor="let location of locations">
+                    {{location.name}}
+                    <button matChipRemove>
+                      <i class="bi bi-x"></i>
+                    </button>
+                  </mat-chip-row>
+                </mat-chip-grid>
+                <input [matChipInputFor]="locationsChipGrid" [matAutocomplete]="auto"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodesForLocations"
+                  (matChipInputTokenEnd)="add($event, 1)" />
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option [value]="fruit.name"
+                    *ngFor="let fruit of filteredData?.cities">{{fruit.name}}</mat-option>
+                </mat-autocomplete>
+                <span class="invalid-feedback text-danger" matError *ngIf="validateField('locations')">
+                  Please select a location.
+                </span>
+              </mat-form-field>
+              {{filteredData?.cities}}
+            </div>
+            <div class="col-md-6">
+              <mat-form-field class="custom-chip-list">
+                <label for="validationCustom05" class="custom-label">Skills</label>
+                <mat-chip-grid #skillsChipGrid formControlName="skills" aria-label="enter sandwich fillings">
+                  <mat-chip-row (removed)="remove(skill, 2)" *ngFor="let skill of skills">
+                    {{skill.name}}
+                    <button matChipRemove>
+                      <i class="bi bi-x"></i>
+                    </button>
+                  </mat-chip-row>
+                  <input [matChipInputFor]="skillsChipGrid" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (matChipInputTokenEnd)="add($event, 2)" />
+                </mat-chip-grid>
+                <span class="invalid-feedback text-danger" matError *ngIf="validateField('skills')">
+                  Please select a skill.
+                </span>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="editor">
+                <ngx-editor-menu [editor]="editor" [toolbar]="toolbar">
+                </ngx-editor-menu>
+                <ngx-editor [editor]="editor" formControlName="description">
+                </ngx-editor>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="closePost" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button class="btn btn-secondary" data-bs-target="#staticBackdrop" data-bs-toggle="modal"
+          data-bs-dismiss="modal">Back</button>
+        <button class="btn btn-primary" (click)="saveJob()">Post Job</button>
+      </div>
     </div>
   </div>
 </div>

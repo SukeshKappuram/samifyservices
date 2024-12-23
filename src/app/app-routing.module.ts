@@ -33,6 +33,13 @@ const routes: Routes = [
   {
     path: 'jobs',
     component: JobsComponent
+  },
+  {
+    path: 'admin-jobs',
+    component: JobsComponent,
+    data: {
+      operationURL: 'admin-jobs'
+    }
   }
 ];
 

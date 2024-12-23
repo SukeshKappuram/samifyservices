@@ -183,10 +183,6 @@
                                 <li class="elementor-icon-list-item">
                                   <span class="elementor-icon-list-text">info&#64;ryprotechnologies.com</span>
                                 </li>
-                                <!-- <li class="elementor-icon-list-item">
-                                                                  <span
-                                                                      class="elementor-icon-list-text">hello@example.com</span>
-                                                              </li> -->
                               </ul>
                             </div>
                           </div>
@@ -239,50 +235,48 @@
                         <div class="elementor-shortcode">
                           <div class="wpforms-container " id="wpforms-336">
                             <form id="wpforms-form-336" class="wpforms-validate wpforms-form" data-formid="336"
-                              method="post" enctype="multipart/form-data"
-                              action="/co-working-space-02/contact/?customize=template"
-                              data-token="7604cf98d0fd06f7b9212395f2cfce18" data-token-time="1728998831"
-                              novalidate="novalidate"><noscript class="wpforms-error-noscript">Please enable
-                                JavaScript in your browser to complete this
-                                form.</noscript>
+                              [formGroup]="contactUsForm">
                               <div class="wpforms-field-container">
                                 <div id="wpforms-336-field_0-container" class="wpforms-field wpforms-field-name"
                                   data-field-id="0"><label class="wpforms-field-label wpforms-label-hide"
-                                    for="wpforms-336-field_0">Name <span
-                                      class="wpforms-required-label">*</span></label><input type="text"
-                                    id="wpforms-336-field_0" class="wpforms-field-large wpforms-field-required"
-                                    name="wpforms[fields][0]" placeholder="Your Name" required="">
+                                    for="wpforms-336-field_0">Name <span class="wpforms-required-label">*</span></label>
+                                  <input type="text" id="wpforms-336-field_0"
+                                    class="wpforms-field-large wpforms-field-required" name="wpforms[fields][0]"
+                                    placeholder="Your Name" required="true" formControlName="name">
+                                    <span class="text-danger" *ngIf="validateField('name')">Please enter your name</span>
                                 </div>
                                 <div id="wpforms-336-field_1-container" class="wpforms-field wpforms-field-email"
                                   data-field-id="1"><label class="wpforms-field-label wpforms-label-hide"
                                     for="wpforms-336-field_1">Email <span
-                                      class="wpforms-required-label">*</span></label><input type="email"
-                                    id="wpforms-336-field_1" class="wpforms-field-large wpforms-field-required"
-                                    name="wpforms[fields][1]" placeholder="Your Email" spellcheck="false" required="">
+                                      class="wpforms-required-label">*</span></label>
+                                  <input type="email" id="wpforms-336-field_1"
+                                    class="wpforms-field-large wpforms-field-required" name="wpforms[fields][1]"
+                                    placeholder="Your Email" spellcheck="false" required="true" formControlName="email">
+                                    <span class="text-danger" *ngIf="validateField('email')">Please enter valid email</span>
                                 </div>
                                 <div id="wpforms-336-field_3-container" class="wpforms-field wpforms-field-text"
                                   data-field-id="3"><label class="wpforms-field-label wpforms-label-hide"
                                     for="wpforms-336-field_3">Subject <span
-                                      class="wpforms-required-label">*</span></label><input type="text"
-                                    id="wpforms-336-field_3" class="wpforms-field-large wpforms-field-required"
-                                    name="wpforms[fields][3]" placeholder="Subject" required=""></div>
+                                      class="wpforms-required-label">*</span></label>
+                                  <input type="text" id="wpforms-336-field_3"
+                                    class="wpforms-field-large wpforms-field-required" name="wpforms[fields][3]"
+                                    placeholder="Subject" required="true" formControlName="subject">
+                                    <span class="text-danger" *ngIf="validateField('subject')">Please enter subject</span>
+                                </div>
                                 <div id="wpforms-336-field_2-container" class="wpforms-field wpforms-field-textarea"
                                   data-field-id="2"><label class="wpforms-field-label wpforms-label-hide"
                                     for="wpforms-336-field_2">Comment or
-                                    Message <span class="wpforms-required-label">*</span></label><textarea
-                                    id="wpforms-336-field_2" class="wpforms-field-medium wpforms-field-required"
-                                    name="wpforms[fields][2]" placeholder="Your Message" required=""></textarea></div>
+                                    Message <span class="wpforms-required-label">*</span></label>
+                                  <textarea id="wpforms-336-field_2" class="wpforms-field-medium wpforms-field-required"
+                                    name="wpforms[fields][2]" placeholder="Your Message" required="true"
+                                    formControlName="message"></textarea>
+                                </div>
                               </div>
-                              <div class="wpforms-field wpforms-field-hp"><label for="wpforms-336-field-hp"
-                                  class="wpforms-field-label">Phone</label><input type="text" name="wpforms[hp]"
-                                  id="wpforms-336-field-hp" class="wpforms-field-medium"></div>
-                              <div class="wpforms-submit-container"><input type="hidden" name="wpforms[id]"
-                                  value="336"><input type="hidden" name="page_title" value="Contact"><input
-                                  type="hidden" name="page_url" value="/contactus"><input type="hidden" name="page_id"
-                                  value="10"><input type="hidden" name="wpforms[post_id]" value="10"><button
-                                  type="submit" name="wpforms[submit]" id="wpforms-submit-336" class="wpforms-submit"
-                                  data-alt-text="Sending..." data-submit-text="Submit" aria-live="assertive"
-                                  value="wpforms-submit">Submit</button></div>
+                              <div class="wpforms-submit-container">
+                                <button type="submit" name="wpforms[submit]" id="wpforms-submit-336"
+                                  class="wpforms-submit" data-alt-text="Sending..." data-submit-text="Submit"
+                                  aria-live="assertive" value="wpforms-submit" (click)="send()">Submit</button>
+                              </div>
                             </form>
                           </div>
                         </div>
