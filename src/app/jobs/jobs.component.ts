@@ -83,6 +83,7 @@ export class JobsComponent implements OnInit {
 
   ngOnInit() {
     let isUserLoggedIn = sessionStorage.getItem('isUserLoggedIn') ?? 'false';
+    console.log('jobs', jobsData);
     this.isUserLoggedIn = JSON.parse(isUserLoggedIn);
     this.getJobs();
     this.editor = new Editor();
@@ -92,10 +93,9 @@ export class JobsComponent implements OnInit {
   }
 
   getJobs(): void {
-    this.auth.getJobs().subscribe((jobs: IJob[]) => {
+    // this.auth.getJobs().subscribe((jobs: IJob[]) => {
       this.latestJobs =
-        (jobs ??
-        jobsData.jobs)
+        (jobsData.jobs)
           .map((element: any, index: number) => ({
             id: element.id,
             description: JSON.parse(JSON.stringify(element.description)),
@@ -109,7 +109,7 @@ export class JobsComponent implements OnInit {
             isDeleted: false,
             isCleared: true
           }));
-    });
+    // });
   }
 
   getDate(obj: any): any {
