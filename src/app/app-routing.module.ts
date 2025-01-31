@@ -11,11 +11,11 @@ import { ServicesComponent } from './services/services.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/home',
+    redirectTo: '/',
     pathMatch: 'full'
   },
   {
-    path: 'home',
+    path: '',
     component: HomeComponent
   },
   {

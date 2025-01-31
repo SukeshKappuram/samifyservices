@@ -34,24 +34,24 @@
                             class="main-header-menu ast-menu-shadow ast-nav-menu ast-flex  submenu-with-border stack-on-mobile">
                             <li id="menu-item-16"
                               class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-2 current_page_item menu-item-16">
-                              <a href="/home" aria-current="page" class="menu-link">Home</a>
+                              <a (click)="view('home')" aria-current="page" class="menu-link" [ngClass]="showTab === 'home'? 'active' : ''">Home</a>
                             </li>
                             <li id="menu-item-17"
                               class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17">
-                              <a href="/about" class="menu-link">About
+                              <a (click)="view('about')" class="menu-link" [ngClass]="showTab === 'about'? 'active' : ''">About
                                 Us</a>
                             </li>
                             <li id="menu-item-18"
                               class="menu-item menu-item-type-post_type menu-item-object-page menu-item-18">
-                              <a href="/services" class="menu-link">Services</a>
+                              <a (click)="view('services')" class="menu-link" [ngClass]="showTab === 'services'? 'active' : ''">Services</a>
                             </li>
                             <li id="menu-item-19"
                               class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20">
-                              <a href="jobs" class="menu-link">Careers</a>
+                              <a (click)="view('jobs')" class="menu-link" [ngClass]="showTab === 'jobs'? 'active' : ''">Careers</a>
                             </li>
                             <li id="menu-item-20"
                               class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20">
-                              <a href="contactus" class="menu-link">Contact</a>
+                              <a (click)="view('contactus')" class="menu-link" [ngClass]="showTab === 'contactus'? 'active' : ''">Contact</a>
                             </li>
                           </ul>
                         </div>
@@ -77,7 +77,8 @@
                   itemscope="itemscope">
                   <span class="site-logo-img"><a href="/home" class="custom-logo-link transparent-custom-logo"
                       rel="home" itemprop="url" aria-label="RYPro"><img width="100" height="100"
-                        src="assets/images/RYPro_Technologies.svg" class="custom-logo" alt="" decoding="async"></a></span>
+                        src="assets/images/RYPro_Technologies.svg" class="custom-logo" alt=""
+                        decoding="async"></a></span>
                 </div>
               </div>
             </div>
@@ -124,19 +125,19 @@
                     class="main-header-menu ast-menu-shadow ast-nav-menu ast-flex  submenu-with-border stack-on-mobile">
                     <li
                       class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-2 current_page_item menu-item-16">
-                      <a href="/home" aria-current="page" class="menu-link">Home</a>
+                      <a (click)="view('home')" aria-current="page" class="menu-link" [ngClass]="showTab === 'home'? 'active' : ''">Home</a>
                     </li>
                     <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-17">
-                      <a href="/about" class="menu-link">About Us</a>
+                      <a (click)="view('about')" class="menu-link" [ngClass]="showTab === 'about'? 'active' : ''">About Us</a>
                     </li>
                     <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-18">
-                      <a href="/services" class="menu-link">Services</a>
+                      <a (click)="view('services')" class="menu-link" [ngClass]="showTab === 'services'? 'active' : ''">Services</a>
                     </li>
                     <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20">
-                      <a href="/jobs" class="menu-link">Careers</a>
+                      <a (click)="view('jobs')" class="menu-link" [ngClass]="showTab === 'jobs'? 'active' : ''">Careers</a>
                     </li>
                     <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20">
-                      <a href="/contactus" class="menu-link">Contact</a>
+                      <a (click)="view('contactus')" class="menu-link" [ngClass]="showTab === 'contactus'? 'active' : ''">Contact</a>
                     </li>
                   </ul>
                 </div>
@@ -147,7 +148,13 @@
       </div>
     </div>
   </header>
-  <router-outlet></router-outlet>
+  <ng-container [ngSwitch]="showTab">
+    <app-home *ngSwitchCase="'home'"></app-home>
+    <app-about *ngSwitchCase="'about'"></app-about>
+    <app-services *ngSwitchCase="'services'"></app-services>
+    <app-jobs *ngSwitchCase="'jobs'"></app-jobs>
+    <app-contactus *ngSwitchCase="'contactus'"></app-contactus>
+  </ng-container>
   <footer class="site-footer" id="colophon" itemtype="https://schema.org/WPFooter" itemscope="itemscope"
     itemid="#colophon">
     <div

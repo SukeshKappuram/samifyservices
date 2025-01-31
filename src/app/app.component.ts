@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'rypro';
+  showTab = 'home';
+
+  view(tabName: string): void {
+    this.showTab = tabName ?? 'home';
+  }
 }

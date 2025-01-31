@@ -71,14 +71,14 @@ export class JobsComponent implements OnInit {
       emailAddress: ['', Validators.required],
       password: ['', Validators.required],
     });
-    this.auth.getData('cities').subscribe((data: ICommonModel[]) => {
-      console.log(data);
-      this.masterData['cities'] = data;
-    });
-    this.auth.getData('courses').subscribe((data: ICommonModel[]) => {
-      console.log(data);
-      this.masterData['courses'] = data;
-    });
+    // this.auth.getData('cities').subscribe((data: ICommonModel[]) => {
+    //   console.log(data);
+    //   this.masterData['cities'] = data;
+    // });
+    // this.auth.getData('courses').subscribe((data: ICommonModel[]) => {
+    //   console.log(data);
+    //   this.masterData['courses'] = data;
+    // });
   }
 
   ngOnInit() {
@@ -88,14 +88,12 @@ export class JobsComponent implements OnInit {
     this.editor = new Editor();
 
     this.filteredData = {...this.masterData};
-    console.log(this.masterData, this.filteredData);
   }
 
   getJobs(): void {
-    this.auth.getJobs().subscribe((jobs: IJob[]) => {
+    // this.auth.getJobs().subscribe((jobs: IJob[]) => {
       this.latestJobs =
-        (jobs ??
-        jobsData.jobs)
+        (jobsData.jobs)
           .map((element: any, index: number) => ({
             id: element.id,
             description: JSON.parse(JSON.stringify(element.description)),
@@ -109,7 +107,7 @@ export class JobsComponent implements OnInit {
             isDeleted: false,
             isCleared: true
           }));
-    });
+    // });
   }
 
   getDate(obj: any): any {
