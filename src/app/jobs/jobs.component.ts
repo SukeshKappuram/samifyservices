@@ -83,6 +83,7 @@ export class JobsComponent implements OnInit {
 
   ngOnInit() {
     let isUserLoggedIn = sessionStorage.getItem('isUserLoggedIn') ?? 'false';
+    console.log('jobs', jobsData);
     this.isUserLoggedIn = JSON.parse(isUserLoggedIn);
     this.getJobs();
     this.editor = new Editor();
